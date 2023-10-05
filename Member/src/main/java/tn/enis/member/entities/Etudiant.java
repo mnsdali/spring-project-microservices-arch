@@ -1,4 +1,4 @@
-package tn.enis.membre.entities;
+package tn.enis.member.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,7 +11,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @DiscriminatorValue("etd")
-public class Etudiant extends Membre{
+public class Etudiant extends Member{
 
     @ManyToOne
     private EnseignantChercheur encadrant;

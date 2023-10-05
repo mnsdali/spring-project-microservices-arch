@@ -1,4 +1,4 @@
-package tn.enis.membre.entities;
+package tn.enis.member.entities;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @DiscriminatorValue("ens")
-public class EnseignantChercheur extends Membre{
+public class EnseignantChercheur extends Member{
 
     @NonNull
     private String grade;
