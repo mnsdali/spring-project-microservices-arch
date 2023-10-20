@@ -1,5 +1,6 @@
 package tn.enis.member.services;
 
+import tn.enis.member.beans.PublicationBean;
 import tn.enis.member.entities.EnseignantChercheur;
 import tn.enis.member.entities.Etudiant;
 import tn.enis.member.entities.Member;
@@ -29,4 +30,9 @@ public interface IMemberService {
     public List<Etudiant> findByEncadrant(EnseignantChercheur enseignantChercheur);
 
     public void affectEtudiantToEncadrant(Long id_etd, Long id_ens);
+
+    public void affecterauteurTopublication(Long idauteur, Long idpub);
+
+    public List<PublicationBean>
+    findPublicationparauteur (Long idauteur);
 }

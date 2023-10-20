@@ -2,13 +2,15 @@ package tn.enis.member.services;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import tn.enis.member.beans.PublicationBean;
 import tn.enis.member.dao.EnseignantChercheurRepository;
 import tn.enis.member.dao.EtudiantRepository;
+import tn.enis.member.dao.MemberPubRepository;
 import tn.enis.member.dao.MemberRepository;
-import tn.enis.member.entities.EnseignantChercheur;
-import tn.enis.member.entities.Etudiant;
-import tn.enis.member.entities.Member;
+import tn.enis.member.entities.*;
+import tn.enis.member.proxies.PublicationProxyService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -17,6 +19,8 @@ public class MemberImpl implements IMemberService{
     MemberRepository memberRepository;
     EtudiantRepository etudiantRepository;
     EnseignantChercheurRepository enseignantChercheurRepository;
+    MemberPubRepository memberPubRepository;
+    PublicationProxyService proxy;
 
     public Member addMember(Member m){
         memberRepository.save(m);
@@ -70,5 +74,27 @@ public class MemberImpl implements IMemberService{
         EnseignantChercheur ens = enseignantChercheurRepository.findById(id_ens).get();
         etd.setEncadrant(ens);
         etudiantRepository.save(etd);
+    }
+
+    public void affecterauteurTopublication(Long idauteur, Long idpub)
+    {
+        Member mbr= memberRepository.findById(idauteur).get();
+        Member_Publication mbs= new Member_Publication();
+        mbs.setAuteur(mbr);
+        mbs.setId(new Member_Pub_Id(idpub, idauteur));
+        memberPubRepository.save(mbs);
+    }
+
+    public List<PublicationBean> findPublicationparauteur(Long idauteur) {
+        List<PublicationBean> pubs=new ArrayList<PublicationBean>();
+        Member auteur= memberRepository.findById(idauteur).get();
+        List< Member_Publication>
+                idpubs=memberPubRepository.findByAuteur(auteur);
+        idpubs.forEach(s->{
+                    System.out.println(s);
+                    pubs.add(proxy.findPublicationById(s.getId().getPublication_id()));
+                }
+        );
+        return pubs;
     }
 }

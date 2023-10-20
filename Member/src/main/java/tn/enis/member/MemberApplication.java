@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import tn.enis.member.beans.PublicationBean;
 import tn.enis.member.dao.MemberRepository;
 import tn.enis.member.entities.EnseignantChercheur;
 import tn.enis.member.entities.Etudiant;
@@ -14,7 +17,9 @@ import tn.enis.member.services.IMemberService;
 import java.util.Date;
 import java.util.List;
 
+@EnableDiscoveryClient
 @SpringBootApplication
+@EnableFeignClients
 @AllArgsConstructor
 public class MemberApplication implements CommandLineRunner {
 	MemberRepository memberRepository;
@@ -95,6 +100,12 @@ public class MemberApplication implements CommandLineRunner {
 		List<Etudiant> etds = membreService.findByEncadrant(ens1);
 		for (Etudiant etd: etds){
 			System.out.println(etd.getEmail());
+		}
+
+		membreService.affecterauteurTopublication(1L, 1L);
+		List<PublicationBean> l = membreService.findPublicationparauteur(1L);
+		for (PublicationBean x :l){
+			System.out.println("x ::::::::::: " +x);
 		}
 	}
 

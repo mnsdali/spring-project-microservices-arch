@@ -15,42 +15,42 @@ import java.util.List;
 public class MembreRestController {
 
 
-    IMemberService membreService;
+    IMemberService memberService;
     @RequestMapping(value="/membres", method= RequestMethod.GET)
     public List<Member> findMembres (){
-        return membreService.findAll();
+        return memberService.findAll();
     }
     @GetMapping(value="/membres/{id}")
     public Member findOneMemberById(@PathVariable Long id){
-        return membreService.findMember(id);
+        return memberService.findMember(id);
     }
 
     @GetMapping(value="/membres/search/cin")
     public Member findOneMemberByCin(@RequestParam String cin)
     {
-        return membreService.findByCin(cin);
+        return memberService.findByCin(cin);
     }
     @GetMapping(value="/membres/search/email")
     public Member findOneMemberByEmail(@RequestParam String email)
     {
-        return membreService.findByEmail(email);
+        return memberService.findByEmail(email);
     }
 
     @PostMapping(value="/membres/enseignant")
     public Member addMembre(@RequestBody EnseignantChercheur m)
     {
-        return membreService.addMember(m);
+        return memberService.addMember(m);
     }
     @PostMapping(value="/membres/etudiant")
     public Member addMembre(@RequestBody Etudiant e)
     {
-        return membreService.addMember(e);
+        return memberService.addMember(e);
     }
 
     @DeleteMapping(value="/membres/{id}")
     public void deleteMembre(@PathVariable Long id)
     {
-        membreService.deleteMember(id);
+        memberService.deleteMember(id);
     }
 
     @PutMapping(value="/membres/etudiant/{id}")
@@ -58,13 +58,22 @@ public class MembreRestController {
     Etudiant p)
     {
         p.setId(id);
-        return membreService.updateMember(p);
+        return memberService.updateMember(p);
     }
     @PutMapping(value="/membres/enseignant/{id}")
     public Member updateMembre(@PathVariable Long id, @RequestBody EnseignantChercheur p)
     {
         p.setId(id);
-        return membreService.updateMember(p);
+        return memberService.updateMember(p);
     }
 
+    @GetMapping("/fullmember/{id}")
+    public Member findAFullMember(@PathVariable(name="id") Long id)
+    {
+
+        Member mbr= memberService.findMember(id);
+        mbr.setPubs(memberService.findPublicationparauteur(id));
+
+        return mbr;
+    }
 }
