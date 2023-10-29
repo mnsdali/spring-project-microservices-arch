@@ -5,7 +5,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.data.rest.webmvc.RepositoryRestController;
 import tn.enis.publication.dao.PublicationRepository;
 import tn.enis.publication.entities.Publication;
 

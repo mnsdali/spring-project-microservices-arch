@@ -73,7 +73,8 @@ public class MembreRestController {
 
         Member mbr= memberService.findMember(id);
         mbr.setPubs(memberService.findPublicationparauteur(id));
-
+        mbr.setEvents(memberService.findEvenementsByMember(id));
+        mbr.setOutils(memberService.findOutilsByUser(id));
         return mbr;
     }
 }

@@ -6,6 +6,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import tn.enis.member.beans.EvenementBean;
+import tn.enis.member.beans.OutilBean;
 import tn.enis.member.beans.PublicationBean;
 import tn.enis.member.dao.MemberRepository;
 import tn.enis.member.entities.EnseignantChercheur;
@@ -103,10 +105,23 @@ public class MemberApplication implements CommandLineRunner {
 		}
 
 		membreService.affecterauteurTopublication(1L, 1L);
-		List<PublicationBean> l = membreService.findPublicationparauteur(1L);
-		for (PublicationBean x :l){
+		List<PublicationBean> pubs= membreService.findPublicationparauteur(1L);
+		for (PublicationBean x :pubs){
 			System.out.println("x ::::::::::: " +x);
 		}
+
+		membreService.affecterUserToOutil(1L,1L);
+		List<OutilBean> outils = membreService.findOutilsByUser(1L);
+		for (OutilBean x :outils){
+			System.out.println("outil ::::::::::: " +x);
+		}
+
+		membreService.affecterMemberToEvenement(1L,1L);
+		List<EvenementBean> events = membreService.findEvenementsByMember(1L);
+		for (EvenementBean x :events){
+			System.out.println("evenement ::::::::::: " +x);
+		}
+
 	}
 
 }

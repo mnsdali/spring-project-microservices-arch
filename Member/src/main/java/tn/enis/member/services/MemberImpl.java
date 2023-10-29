@@ -2,12 +2,13 @@ package tn.enis.member.services;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import tn.enis.member.beans.EvenementBean;
+import tn.enis.member.beans.OutilBean;
 import tn.enis.member.beans.PublicationBean;
-import tn.enis.member.dao.EnseignantChercheurRepository;
-import tn.enis.member.dao.EtudiantRepository;
-import tn.enis.member.dao.MemberPubRepository;
-import tn.enis.member.dao.MemberRepository;
+import tn.enis.member.dao.*;
 import tn.enis.member.entities.*;
+import tn.enis.member.proxies.EvenementProxyService;
+import tn.enis.member.proxies.OutilProxyService;
 import tn.enis.member.proxies.PublicationProxyService;
 
 import java.util.ArrayList;
@@ -19,8 +20,15 @@ public class MemberImpl implements IMemberService{
     MemberRepository memberRepository;
     EtudiantRepository etudiantRepository;
     EnseignantChercheurRepository enseignantChercheurRepository;
+
     MemberPubRepository memberPubRepository;
-    PublicationProxyService proxy;
+    PublicationProxyService pubProxy;
+
+    MemberEvenRepository memberEvenRepository;
+    EvenementProxyService evenProxy;
+
+    MemberOutilRepository memberOutilRepository;
+    OutilProxyService outilProxy;
 
     public Member addMember(Member m){
         memberRepository.save(m);
@@ -92,9 +100,53 @@ public class MemberImpl implements IMemberService{
                 idpubs=memberPubRepository.findByAuteur(auteur);
         idpubs.forEach(s->{
                     System.out.println(s);
-                    pubs.add(proxy.findPublicationById(s.getId().getPublication_id()));
+                    pubs.add(pubProxy.findPublicationById(s.getId().getPublication_id()));
                 }
         );
         return pubs;
+    }
+
+    public void affecterUserToOutil(Long userid, Long outilid)
+    {
+        Member user= memberRepository.findById(userid).get();
+        Member_Outil mbo= new Member_Outil();
+        mbo.setUser(user);
+        mbo.setId(new Member_Outil_Id(outilid, userid));
+        memberOutilRepository.save(mbo);
+    }
+
+    public List<OutilBean> findOutilsByUser(Long user_id) {
+        List<OutilBean> outils= new ArrayList<>();
+        Member user= memberRepository.findById(user_id).get();
+        List< Member_Outil>
+                idoutils=memberOutilRepository.findByUser(user);
+        idoutils.forEach(s->{
+                    System.out.println(s);
+                outils.add(outilProxy.findOutil(s.getId().getOutil_id()));
+                }
+        );
+        return outils;
+    }
+
+    public void affecterMemberToEvenement(Long memberid, Long eventid)
+    {
+        Member member= memberRepository.findById(memberid).get();
+        Member_Evenement mbe= new Member_Evenement();
+        mbe.setMember(member);
+        mbe.setId(new Member_Even_Id(eventid, memberid));
+        memberEvenRepository.save(mbe);
+    }
+
+    public List<EvenementBean> findEvenementsByMember(Long memberid) {
+        List<EvenementBean> events= new ArrayList<>();
+        Member member= memberRepository.findById(memberid).get();
+        List< Member_Evenement>
+                idevents=memberEvenRepository.findByMember(member);
+        idevents.forEach(s->{
+                    System.out.println(s);
+            events.add(evenProxy.findEvenementById(s.getId().getEvenement_id()));
+                }
+        );
+        return events;
     }
 }

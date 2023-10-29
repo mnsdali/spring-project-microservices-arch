@@ -2,6 +2,8 @@ package tn.enis.member.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import tn.enis.member.beans.EvenementBean;
+import tn.enis.member.beans.OutilBean;
 import tn.enis.member.beans.PublicationBean;
 
 import java.io.Serializable;
@@ -40,6 +42,10 @@ public abstract class Member implements Serializable {
 
     @Transient
     Collection<PublicationBean> pubs;
+    @Transient
+    Collection<OutilBean> outils;
+    @Transient
+    Collection<EvenementBean> events;
 //plus génération des getters et setters
 
 }

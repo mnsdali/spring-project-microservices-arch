@@ -1,16 +1,22 @@
 package tn.enis.outil.dao;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.webmvc.RepositoryRestController;
 import tn.enis.outil.entities.Outil;
 
-import java.util.List;
 
-public interface OutilRepository extends JpaRepository<Outil,Long>
-{
+@RepositoryRestController
+public interface OutilRepository extends JpaRepository<Outil, Long> {
+  
 
+
+    // Find an Outil by its source
     Outil findBySource(String source);
-    List<Outil> findByNomStartingWith(String caractere);
+   
+	public List<Outil> findBySourceStartingWith(String source);
+    
+    
 
 
 }
-
